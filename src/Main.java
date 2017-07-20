@@ -2,12 +2,13 @@ import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 
 import java.util.Scanner;
 import java.util.InputMismatchException;
+
 public class Main {
     //write a program that will recognize invalid inputs when the user requests information about students in a class
     //what will application do?
     public static void main(String[] args) {
         //continue boolean
-        String contin;
+        String contin = "Y";
         //provide information about students in a class
         //prompt the user to ask about a particular student
         Scanner scan = new Scanner(System.in);
@@ -47,43 +48,55 @@ public class Main {
         //initial greeting
         System.out.println("Welcome to the Grand Circus Clown Rental Service!");
         System.out.println("We have many enthusiastic clowns available to rent (some of them even know how to code!)");
-        do {
-            //user prompt
-            System.out.println("We have 20 clowns available at the moment. Which one were you interested in?");
-            //grabs number from 1-20 and stores in int variable userSelection
-            int userSelection = getUserSelection(scan);
-            if (userSelection > 19 || userSelection < 0) {
-                System.out.println("That's not a number between 1 and 20, bozo.");
-                System.out.println("Who's it gonna be? (enter 1-20):");
-                userSelection = getUserSelection(scan);
-            }
-            //displays information to the user
-            System.out.println("That's " + clowns[userSelection] + "!");
-            //clears input
-            scan.nextLine();
-            //user prompt
-            System.out.println("What would you like to know about " + clowns[userSelection] + "?");
-            System.out.print("What type of clown are they? Or their outfit of the day? : ");
-            //stores user input (converted to all lowercase) in String variable clownInfoRequest
-            String clownInfoRequest = scan.nextLine().toLowerCase();
-            if (clownInfoRequest.contains("type") || clownInfoRequest.contains("clown")) {
-                System.out.println(clowns[userSelection] + " is a " + typeOfClown[userSelection] + " clown.");
-                System.out.print("Would you like to know more about "+ clowns[userSelection] +"? (y/n): ");
-                contin = scan.nextLine().toLowerCase();
-                if (contin.contains("y") || contin.contains("s")) {
-                    System.out.println(clowns[userSelection] + " is wearing " + outfits[userSelection]);
+
+            do {
+                try {
+                    //user prompt
+                    System.out.println("We have 20 clowns available at the moment. Which one were you interested in?");
+                    scan.next();
+                    //grabs number from 1-20 and stores in int variable userSelection
+                    int userSelection = getUserSelection(scan);
+                    if (userSelection > 19 || userSelection < 0) {
+                        System.out.println("That's not a number between 1 and 20, bozo.");
+                        System.out.println("Who's it gonna be? (enter 1-20):");
+                        userSelection = getUserSelection(scan);
+                    }
+                    //displays information to the user
+                    System.out.println("That's " + clowns[userSelection] + "!");
+                    //clears input
+                    scan.nextLine();
+                    //user prompt
+                    System.out.println("What would you like to know about " + clowns[userSelection] + "?");
+                    System.out.print("What type of clown are they? Or their outfit of the day? : ");
+                    //stores user input (converted to all lowercase) in String variable clownInfoRequest
+                    String clownInfoRequest = scan.nextLine().toLowerCase();
+                    if (clownInfoRequest.contains("type") || clownInfoRequest.contains("clown")) {
+                        System.out.println(clowns[userSelection] + " is a " + typeOfClown[userSelection] + " clown.");
+                        System.out.print("Would you like to know more about " + clowns[userSelection] + "? (y/n): ");
+                        contin = scan.nextLine().toLowerCase();
+                        if (contin.contains("y") || contin.contains("s")) {
+                            System.out.println(clowns[userSelection] + " is wearing " + outfits[userSelection]);
+                        }
+                    } else if (clownInfoRequest.contains("fit") || clownInfoRequest.contains("day")) {
+                        System.out.println(clowns[userSelection] + " is wearing a " + outfits[userSelection]);
+                        System.out.print("Would you like to know more about " + clowns[userSelection] + "? (y/n): ");
+                        contin = scan.nextLine().toLowerCase();
+                        if (contin.contains("y") || contin.contains("s")) {
+                            System.out.println(clowns[userSelection] + " is a " + typeOfClown[userSelection] + " clown.");
+                        }
+                    }
+                    System.out.println("Would you like to learn about another clown?");
+                    contin = scan.nextLine().toLowerCase();
+
+
+                } catch(ArrayIndexOutOfBoundsException e){
+                    System.out.println("That is an invalid entry. Please try again.");
+                } catch(InputMismatchException e){
+                    System.out.println("That is not a number, please try again");
                 }
-            } else if (clownInfoRequest.contains("fit") || clownInfoRequest.contains("day")) {
-                System.out.println(clowns[userSelection] + " is wearing a " + outfits[userSelection]);
-                System.out.print("Would you like to know more about "+ clowns[userSelection] +"? (y/n): ");
-                contin = scan.nextLine().toLowerCase();
-                if (contin.contains("y") || contin.contains("s")) {
-                    System.out.println(clowns[userSelection] + " is a " + typeOfClown[userSelection] + " clown.");
-                }
-            }
-            System.out.println("Would you like to learn about another clown?");
-            contin = scan.nextLine().toLowerCase();
-        } while (contin.contains("y") || contin.contains("s"));
+
+    } while (contin.toLowerCase().contains("y") || contin.toLowerCase().contains("s")) ;
+        System.out.println(contin);
         System.out.println("Thanks for clowning around!");
     }
     public static int getUserSelection(Scanner scan) {
